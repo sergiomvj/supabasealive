@@ -1,7 +1,10 @@
+const path = require('path');
+const dbPath = process.env.DATABASE_PATH || path.join(__dirname, 'database.sqlite');
+
 const knex = require('knex')({
     client: 'sqlite3',
     connection: {
-        filename: './database.sqlite'
+        filename: dbPath
     },
     useNullAsDefault: true
 });
