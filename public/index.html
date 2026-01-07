@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Alive | Keep your projects active</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body class="dark-mode">
+    <div class="glass-background"></div>
+    
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon">⚡</span>
+            <h1>Supabase<span>Alive</span></h1>
+        </div>
+        <button id="addProjectBtn" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Project
+        </button>
+    </nav>
+
+    <main class="container">
+        <header class="dashboard-header">
+            <h2>Your Projects</h2>
+            <p>Monitoring your projects to prevent them from pausing.</p>
+        </header>
+
+        <div id="projectsGrid" class="projects-grid">
+            <!-- Projects will be loaded here -->
+            <div class="loader">Loading projects...</div>
+        </div>
+    </main>
+
+    <!-- Modal for adding/editing projects -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3>Register New Project</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="projectForm">
+                <div class="form-group">
+                    <label for="pName">Project Name</label>
+                    <input type="text" id="pName" placeholder="My Awesome Project" required>
+                </div>
+                <div class="form-group">
+                    <label for="pUrl">Supabase URL</label>
+                    <input type="url" id="pUrl" placeholder="https://xyz.supabase.co" required>
+                </div>
+                <div class="form-group">
+                    <label for="pKey">Supabase Key (Anon or Service Role)</label>
+                    <input type="password" id="pKey" placeholder="your-uuid-key" required>
+                    <small>Service Role key is recommended if RLS is strict.</small>
+                </div>
+                <div class="form-group">
+                    <label for="pFreq">Heartbeat Frequency (Hours)</label>
+                    <input type="number" id="pFreq" value="24" min="1" max="144" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Save Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SQL instructions section -->
+    <section class="sql-instructions container">
+        <div class="glass-card">
+            <h4><i class="fas fa-terminal"></i> Database Setup</h4>
+            <p>Before adding a project, run this SQL in your Supabase SQL Editor:</p>
+            <pre><code>create table if not exists alive (
+  id uuid default gen_random_uuid() primary key,
+  word text not null,
+  created_at timestamp with time zone default now()
+);
+
+-- Optional: Enable RLS
+alter table alive enable row level security;
+create policy "Enable insert for everyone" on alive for insert with check (true);</code></pre>
+        </div>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>
