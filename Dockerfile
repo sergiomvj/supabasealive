@@ -1,5 +1,5 @@
 # Build stage
-FROM node:18-slim
+FROM node:20-slim
 
 # Create app directory
 WORKDIR /usr/src/app
