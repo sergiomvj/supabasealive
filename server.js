@@ -104,6 +104,28 @@ app.post('/api/projects/:id/heartbeat', async (req, res) => {
     res.json(updatedProject);
 });
 
+// Backup Routes
+app.get('/api/backup/export', async (req, res) => {
+    const projects = await knex('projects').select('*');
+    res.json(projects);
+});
+
+app.post('/api/backup/import', async (req, res) => {
+    const projects = req.body;
+    if (!Array.isArray(projects)) return res.status(400).json({ error: 'Invalid data format' });
+
+    for (const project of projects) {
+        const { name, supabase_url, supabase_key, frequency_hours } = project;
+        await knex('projects').insert({
+            name,
+            supabase_url,
+            supabase_key,
+            frequency_hours: frequency_hours || 24
+        });
+    }
+    res.json({ message: `${projects.length} projects imported successfully` });
+});
+
 // Start server
 async function start() {
     await initDb();

@@ -1,24 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supabase Alive | Keep your projects active</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap"
+        rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
+
 <body class="dark-mode">
     <div class="glass-background"></div>
-    
+
     <nav class="navbar">
         <div class="logo">
             <span class="logo-icon">⚡</span>
             <h1>Supabase<span>Alive</span></h1>
         </div>
-        <button id="addProjectBtn" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Add Project
-        </button>
+        <div class="nav-actions">
+            <button id="exportBtn" class="btn btn-outline" title="Export Projects">
+                <i class="fas fa-download"></i> Export
+            </button>
+            <button id="importBtn" class="btn btn-outline" title="Import Projects">
+                <i class="fas fa-upload"></i> Import
+            </button>
+            <input type="file" id="importFile" style="display: none;" accept=".json">
+            <button id="addProjectBtn" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Project
+            </button>
+        </div>
     </nav>
 
     <main class="container">
@@ -84,4 +97,5 @@ create policy "Enable insert for everyone" on alive for insert with check (true)
 
     <script src="app.js"></script>
 </body>
+
 </html>

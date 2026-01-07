@@ -145,6 +145,54 @@ addProjectBtn.onclick = () => {
     document.querySelector('.modal-footer button').innerText = 'Save Project';
     projectModal.style.display = 'block';
 };
+
+// Export
+document.getElementById('exportBtn').onclick = async () => {
+    try {
+        const response = await fetch(`${API_URL}/backup/export`);
+        const data = await response.json();
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `supabase-alive-backup-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+    } catch (error) {
+        alert('Error exporting projects');
+    }
+};
+
+// Import
+const importFile = document.getElementById('importFile');
+document.getElementById('importBtn').onclick = () => importFile.click();
+
+importFile.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+        try {
+            const projects = JSON.parse(event.target.result);
+            const response = await fetch(`${API_URL}/backup/import`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(projects)
+            });
+
+            if (response.ok) {
+                alert('Projects imported successfully!');
+                fetchProjects();
+            } else {
+                alert('Failed to import projects.');
+            }
+        } catch (error) {
+            alert('Invalid file format.');
+        }
+    };
+    reader.readAsText(file);
+};
+
 closeModal.onclick = () => projectModal.style.display = 'none';
 window.onclick = (event) => {
     if (event.target === projectModal) projectModal.style.display = 'none';
